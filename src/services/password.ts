@@ -19,6 +19,7 @@ export class Password {
 
   static async compare(storedPassword: string, suppliedPassword: string) {
     const [hashedPassword, salt] = storedPassword.split(".");
+
     const hastVerify = (
       await scryptAsync(
         suppliedPassword,

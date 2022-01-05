@@ -1,7 +1,40 @@
 import { Request, Response, NextFunction } from "express";
+import { BadRequestError } from "../../errors/bad-request-error";
+import { User } from "../../models/user";
+import { jwtService, userPayload } from "../../services/jwt";
 
-export const signUp = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+const signUp = async (req: Request, res: Response, next: NextFunction) => {
+  const { email, password } = req.body;
+
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) {
+    throw new BadRequestError(
+      "Uživatel s tímto emailem již existuje. Zkuste se přihlásit"
+    );
+  }
+
+  const newUser = User.build({
+    email,
+    password,
+    isAdmin: false,
+  });
+
+  await newUser.save();
+
+  const payload = {
+    id: newUser.id,
+    email: newUser.email,
+    isAdmin: newUser.isAdmin,
+  } as userPayload;
+
+  const userJwt = jwtService.getToken(payload);
+
+  req.session = {
+    jwt: userJwt,
+  };
+
+  res.status(201).send(newUser);
+};
+
+export default signUp;

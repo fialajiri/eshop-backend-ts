@@ -23,4 +23,6 @@ export const currentUser = (
     const payload = jwtService.verifyUser(req.session.jwt);
     req.currentUser = payload;
   } catch (err) {}
+
+  next();
 };

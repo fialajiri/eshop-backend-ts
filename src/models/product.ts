@@ -14,7 +14,7 @@ interface ProductModel extends mongoose.Model<ProductDoc> {
   build(attrs: ProductAttrs): ProductDoc;
 }
 
-interface ProductDoc {
+interface ProductDoc extends mongoose.Document {
   userId: string;
   name: string;
   image: string;
