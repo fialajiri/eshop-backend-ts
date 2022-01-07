@@ -1,7 +1,39 @@
 import { Request, Response, NextFunction } from "express";
+import mongoose from 'mongoose'
+import { DatabaseConnectionError } from "../../errors/database-connection-error";
+import { NotFoundError } from "../../errors/not-found-error";
+import { Category } from "../../models/category";
+import { Product, ProductDoc } from "../../models/product";
 
 export const deleteProduct = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  const { productId } = req.params;
+  let product: (ProductDoc & { _id: any }) | null;
+
+  try {
+    product = await Product.findById(productId);
+  } catch (err) {
+    throw new DatabaseConnectionError();
+  }
+
+  if (!product) {
+    throw new NotFoundError();
+  }
+
+  try {
+    const session = await mongoose.startSession()
+    session.startTransaction()
+    await Category.updateMany(
+      { id: product.category },
+      { $pull: { products: product.id } }
+    );
+    await product.remove();
+    await session.commitTransaction();
+    res.status(200).send();
+  } catch (err) {
+    throw new DatabaseConnectionError("Nepodařilo se smazat produkt");
+  }
+};

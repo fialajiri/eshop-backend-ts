@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import { DatabaseConnectionError } from "../../errors/database-connection-error";
-import { Product } from "../../models/product";
+import { Category } from "../../models/category";
 
-export const getProducts = async (
+export const getCategories = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const products = await Product.find();
-    res.status(200).send(products);
+    const categories = await Category.find();
+    res.status(200).send(categories);
   } catch (err) {
     throw new DatabaseConnectionError();
   }

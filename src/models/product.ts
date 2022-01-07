@@ -1,10 +1,10 @@
+import { CategoryDoc } from "./category";
 import mongoose from "mongoose";
 
 interface ProductAttrs {
-  userId: string;
   name: string;
-  image: string;
-  category: string;
+  image: string[];
+  category: CategoryDoc[];
   description: string;
   price: number;
   countInStock: number;
@@ -14,25 +14,23 @@ interface ProductModel extends mongoose.Model<ProductDoc> {
   build(attrs: ProductAttrs): ProductDoc;
 }
 
-interface ProductDoc extends mongoose.Document {
-  userId: string;
+export interface ProductDoc extends mongoose.Document {
   name: string;
-  image: string;
-  category: string;
+  image: string[];
+  category: CategoryDoc[];
   description: string;
   price: number;
   countInStock: number;
-  updatedAt: string;
-  createdAt: string;
+  updatedAt: Date;
+  createdAt: Date;
 }
 
 const productSchema = new mongoose.Schema(
   {
-    userId: { type: String, required: true },
     name: { type: String, required: true },
-    image: { type: String, required: true },
-    category: { type: String, required: true },
-    describtion: { type: String, required: true },
+    image: [{ type: String, required: true }],
+    category: [{ type: mongoose.Types.ObjectId, ref: "Category" }],
+    description: { type: String, required: true },
     price: { type: Number, required: true, default: 0 },
     countInStock: { type: Number, required: true, default: 0 },
   },

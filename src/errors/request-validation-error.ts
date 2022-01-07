@@ -6,6 +6,7 @@ export class RequestValidationError extends CustomError {
 
   constructor(public errors: ValidationError[]) {
     super("Neplatné vstupy");
+    
 
     Object.setPrototypeOf(this, RequestValidationError.prototype);
   }

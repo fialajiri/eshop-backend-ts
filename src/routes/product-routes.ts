@@ -12,50 +12,48 @@ import { updateProduct } from "../controllers/product/update-product";
 
 const router = express.Router();
 
+const productValidation = [
+  body("name")
+    .trim()
+    .isLength({ min: 4, max: 30 })
+    .withMessage("Název produktu musí mít mezi 4 a 30 znaky."),
+  body("category")
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage("Kategorie produktu musí být vyplněna"),
+  body("image").not().isEmpty().withMessage("Přiložte fotografie"),
+  body("description")
+    .trim()
+    .not().isEmpty()
+    .isLength({ max: 200 })
+    .withMessage("Popis musí mít maximálně 200 znaků"),
+  body("price").isFloat({ gt: 0 }).withMessage("Cena musí být větší než nula"),
+  body("countInStock")
+    .isInt({ min: 0 })
+    .withMessage("Množství skladem musí být větší než nula"),
+];
+
 router.get("/api/products", getProducts);
 
-router.get("api/products/:id", getProductById);
+router.get("/api/products/:productId", getProductById);
 
 router.post(
   "/api/products",
   requireAdmin,
-  [
-    body("name")
-      .trim()
-      .isLength({ min: 4, max: 30 })
-      .withMessage("Název produktu musí mít mezi 4 a 30 znaky."),
-    body("category").trim().notEmpty(),
-    body("description")
-      .trim()
-      .isLength({ max: 200 })
-      .withMessage("Popis musí mít maximálně 200 znaků"),
-    body("price").isFloat({ gt: 0 }),
-    body("countInStock").isInt({ gt: -1 }),
-  ],
+  productValidation,
   validateRequest,
   createProduct
 );
 
 router.put(
-  "/api/products/:id",
+  "/api/products/:productId",
   requireAdmin,
-  [
-    body("name")
-      .trim()
-      .isLength({ min: 4, max: 30 })
-      .withMessage("Název produktu musí mít mezi 4 a 30 znaky."),
-    body("category").trim().notEmpty(),
-    body("description")
-      .trim()
-      .isLength({ max: 200 })
-      .withMessage("Popis musí mít maximálně 200 znaků"),
-    body("price").isFloat({ gt: 0 }),
-    body("countInStock").isInt({ gt: -1 }),
-  ],
+  productValidation,
   validateRequest,
   updateProduct
 );
 
-router.delete("/api/products/:id", requireAdmin, deleteProduct);
+router.delete("/api/products/:productId", requireAdmin, deleteProduct);
 
 export { router as productRoutes };

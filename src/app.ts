@@ -8,6 +8,7 @@ import { currentUser } from "./middlewares/current-user";
 import { NotFoundError } from "./errors/not-found-error";
 import { userRoutes } from "./routes/user-routes";
 import { productRoutes } from "./routes/product-routes";
+import { categoryRoutes } from "./routes/category-routes";
 
 const app = express();
 
@@ -21,10 +22,11 @@ app.use(
   })
 );
 
-app.use(currentUser)
+app.use(currentUser);
 
 app.use(userRoutes);
 app.use(productRoutes);
+app.use(categoryRoutes);
 
 app.all("*", () => {
   throw new NotFoundError();

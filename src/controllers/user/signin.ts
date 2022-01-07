@@ -1,13 +1,20 @@
 import { Request, Response, NextFunction } from "express";
 import { BadRequestError } from "../../errors/bad-request-error";
-import { User } from "../../models/user";
+import { DatabaseConnectionError } from "../../errors/database-connection-error";
+import { User, UserDoc } from "../../models/user";
 import { jwtService, userPayload } from "../../services/jwt";
 import { Password } from "../../services/password";
 
 const signIn = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
-  const existingUser = await User.findOne({ email });
+  let existingUser: (UserDoc & { _id: any }) | null;
+
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (err) {
+    throw new DatabaseConnectionError();
+  }
 
   if (!existingUser) {
     throw new BadRequestError("Neplatné přístupové údaje");
