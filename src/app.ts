@@ -9,6 +9,8 @@ import { NotFoundError } from "./errors/not-found-error";
 import { userRoutes } from "./routes/user-routes";
 import { productRoutes } from "./routes/product-routes";
 import { categoryRoutes } from "./routes/category-routes";
+import { cartRoutes } from "./routes/cart-routes";
+import { OrderRoutes } from "./routes/order-routes";
 
 const app = express();
 
@@ -27,6 +29,8 @@ app.use(currentUser);
 app.use(userRoutes);
 app.use(productRoutes);
 app.use(categoryRoutes);
+app.use(cartRoutes);
+app.use(OrderRoutes);
 
 app.all("*", () => {
   throw new NotFoundError();

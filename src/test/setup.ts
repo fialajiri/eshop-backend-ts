@@ -6,7 +6,7 @@ import { app } from "../app";
 
 
 declare global {
-  var signin: (isAdmin:boolean) => string[];
+  var signin: (isAdmin:boolean, userId?:string) => string[];
 }
 
 let mongo: any;
@@ -22,6 +22,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  jest.setTimeout(10000)
   const collections = await mongoose.connection.db.collections();
 
   for (let collection of collections) {
@@ -34,10 +35,10 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.signin = (isAdmin:boolean) => {
+global.signin = (isAdmin:boolean, userId?:string) => {
   // Build a JWT payload.  { id, email }
   const payload = {
-    id: new mongoose.Types.ObjectId().toHexString(),
+    id: userId || new mongoose.Types.ObjectId().toHexString(),
     email: 'test@test.com',
     isAdmin:isAdmin
   };

@@ -27,8 +27,8 @@ export const deleteProduct = async (
     const session = await mongoose.startSession()
     session.startTransaction()
     await Category.updateMany(
-      { id: product.category },
-      { $pull: { products: product.id } }
+      { _id: product.categories },
+      { $pull: { products: product._id } }
     );
     await product.remove();
     await session.commitTransaction();

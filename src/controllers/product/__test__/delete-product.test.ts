@@ -21,7 +21,7 @@ it("deletes a product", async () => {
     .send({
       name: "Product1",
       image: ["image1.jpg", "image2.jpg"],
-      category: categoryId,
+      categories: categoryId,
       description: "This is product 1. It is very good",
       price: 199,
       countInStock: 10,

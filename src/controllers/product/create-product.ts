@@ -9,12 +9,13 @@ export const createProduct = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name, category, description, price, countInStock, image } = req.body;
+  const { name, categories, description, price, countInStock, image } =
+    req.body;
 
   const newProduct = Product.build({
     name,
     image,
-    category,
+    categories,
     description,
     price,
     countInStock,
@@ -24,8 +25,8 @@ export const createProduct = async (
     const session = await mongoose.startSession();
     session.startTransaction();
     await Category.updateMany(
-      { id: newProduct.category },
-      { $push: { products: newProduct.id } }
+      { _id: newProduct.categories },
+      { $push: { products: newProduct._id } }
     );
     await newProduct.save();
     await session.commitTransaction();

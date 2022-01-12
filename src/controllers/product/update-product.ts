@@ -11,7 +11,7 @@ export const updateProduct = async (
   next: NextFunction
 ) => {
   const { productId } = req.params;
-  const { name, category, description, price, countInStock, image } = req.body;
+  const { name, categories, description, price, countInStock, image } = req.body;
 
   let product: (ProductDoc & { _id: any }) | null;
 
@@ -25,25 +25,20 @@ export const updateProduct = async (
     throw new NotFoundError();
   }
 
-  const oldCategory = product.category;
+  const oldCategory = product.categories;
 
-  product.name = name;
-  product.category = category;
-  product.image = image;
-  product.description = description;
-  product.price = price;
-  product.countInStock = countInStock;
+  product.set({ name, categories, image, description, price, countInStock });
 
   try {
     const session = await mongoose.startSession();
     session.startTransaction();
     await Category.updateMany(
-      { id: product.category },
-      { $push: { products: product.id } }
+      { _id: product.categories },
+      { $push: { products: product._id } }
     );
     await Category.updateMany(
-      { id: product.category },
-      { $pull: { products: product.id } }
+      { _id: product.categories },
+      { $pull: { products: product._id } }
     );
     await product.save();
     await session.commitTransaction();

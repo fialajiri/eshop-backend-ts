@@ -11,7 +11,7 @@ it("return a 404 the provided id does not exist", async () => {
     .send({
       name: "Product1v2",
       image: ["image1.jpg", "image2.jpg"],
-      category: "Category 2",
+      categories: "Category 2",
       description: "This is product 1. It is excellent quality",
       price: 299,
       countInStock: 100,
@@ -27,7 +27,7 @@ it("return a 401 if the user is not admin", async () => {
     .send({
       name: "Product1v2",
       image: ["image1.jpg", "image2.jpg"],
-      category: "Category 2",
+      categories: "Category 2",
       description: "This is product 1. It is excellent quality",
       price: 299,
       countInStock: 100,
@@ -44,7 +44,7 @@ it("it return a 400 if the user provides invalid inputs", async () => {
     .send({
       name: "Product1",
       image: ["image1.jpg", "image2.jpg"],
-      category: categoryId,
+      categories: categoryId,
       description: "This is product 1. It is very good",
       price: 199,
       countInStock: 10,
@@ -57,7 +57,7 @@ it("it return a 400 if the user provides invalid inputs", async () => {
     .send({
       name: "",
       image: ["image1.jpg", "image2.jpg"],
-      category: categoryId,
+      categories: categoryId,
       description: "This is product 1. It is excellent quality",
       price: 299,
       countInStock: 100,
@@ -70,7 +70,7 @@ it("it return a 400 if the user provides invalid inputs", async () => {
     .send({
       name: "Product1v2",
       image: [],
-      category: categoryId,
+      categories: categoryId,
       description: "This is product 1. It is excellent quality",
       price: 299,
       countInStock: 100,
@@ -83,7 +83,7 @@ it("it return a 400 if the user provides invalid inputs", async () => {
     .send({
       name: "Product1v2",
       image: ["image1.jpg", "image2.jpg"],
-      category: "",
+      categories: "",
       description: "This is product 1. It is excellent quality",
       price: 299,
       countInStock: 100,
@@ -96,7 +96,7 @@ it("it return a 400 if the user provides invalid inputs", async () => {
     .send({
       name: "Product1v2",
       image: ["image1.jpg", "image2.jpg"],
-      category: categoryId,
+      categories: categoryId,
       description: "",
       price: 299,
       countInStock: 100,
@@ -109,7 +109,7 @@ it("it return a 400 if the user provides invalid inputs", async () => {
     .send({
       name: "Product1v2",
       image: ["image1.jpg", "image2.jpg"],
-      category: categoryId,
+      categories: categoryId,
       description: "This is product 1. It is excellent quality",
       price: -299,
       countInStock: 100,
@@ -122,7 +122,7 @@ it("it return a 400 if the user provides invalid inputs", async () => {
     .send({
       name: "Product1v2",
       image: ["image1.jpg", "image2.jpg"],
-      category: categoryId,
+      categories: categoryId,
       description: "This is product 1. It is excellent quality",
       price: 299,
       countInStock: -100,
@@ -141,7 +141,7 @@ it("it updates the product provided valid inputs", async () => {
     .send({
       name: "Product1",
       image: ["image1.jpg", "image2.jpg"],
-      category: oldCategoryId,
+      categories: oldCategoryId,
       description: "This is product 1. It is very good",
       price: 199,
       countInStock: 10,
@@ -154,7 +154,7 @@ it("it updates the product provided valid inputs", async () => {
     .send({
       name: "",
       image: ["image1.jpg", "image2.jpg"],
-      category: newCategoryId,
+      categories: newCategoryId,
       description: "This is product 1. It is excellent quality",
       price: 299,
       countInStock: 100,

@@ -17,8 +17,7 @@ const productValidation = [
     .trim()
     .isLength({ min: 4, max: 30 })
     .withMessage("Název produktu musí mít mezi 4 a 30 znaky."),
-  body("category")
-    .trim()
+  body("categories")    
     .not()
     .isEmpty()
     .withMessage("Kategorie produktu musí být vyplněna"),
