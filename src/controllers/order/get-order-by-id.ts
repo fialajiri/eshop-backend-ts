@@ -8,12 +8,13 @@ export const getOrderById = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { orderId } = req.params;
+  const { orderId } = req.params; 
   let order: (OrderDoc & { _id: any }) | null;
 
   try {
     order = await Order.findById(orderId)
   } catch (err){
+    console.log(err)
     throw new DatabaseConnectionError()
   }
 

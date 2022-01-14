@@ -23,17 +23,21 @@ export const deleteCategory = async (
     throw new NotFoundError();
   }
 
+  const session = await mongoose.startSession();
+
   try {
-    const session = await mongoose.startSession();
     session.startTransaction();
-    await category.remove();
+    await category.remove({ session: session });
     await Product.updateMany(
       { _id: category.products },
-      { $pull: { categories: category._id } }
+      { $pull: { categories: category._id } },
+      { session: session }
     );
     await session.commitTransaction();
     res.status(200).send();
-  } catch (err) {    
+  } catch (err) {
     throw new DatabaseConnectionError();
+  } finally {
+    session.endSession();
   }
 };

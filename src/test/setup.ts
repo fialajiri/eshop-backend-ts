@@ -1,5 +1,6 @@
 import request from "supertest";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import { MongoMemoryReplSet } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { jwtService } from "../services/jwt";
 import { app } from "../app";
@@ -10,15 +11,20 @@ declare global {
 }
 
 let mongo: any;
+let replset:any
 
 beforeAll(async () => {
   process.env.JWT_SECRET = "my_secret_key";
   process.env.JWT_EXPIRY = '1000'
 
-  mongo = await MongoMemoryServer.create();
-  const mongoUri = await mongo.getUri();
+  // mongo = await MongoMemoryServer.create();
+  // const mongoUri = await mongo.getUri();
 
-  await mongoose.connect(mongoUri);
+   replset = await MongoMemoryReplSet.create({ replSet: { storageEngine: 'wiredTiger' } });
+  await replset.waitUntilRunning();
+  const uri = replset.getUri();  
+
+  await mongoose.connect(uri);
 });
 
 beforeEach(async () => {
@@ -31,8 +37,12 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await mongo.stop();
+  // await mongo.stop();
+
   await mongoose.connection.close();
+  await replset.stop()
+  await replset.cleanup()
+
 });
 
 global.signin = (isAdmin:boolean, userId?:string) => {

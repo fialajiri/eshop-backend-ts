@@ -21,18 +21,28 @@ export const createProduct = async (
     countInStock,
   });
 
+  const session = await mongoose.startSession();
+
   try {
-    const session = await mongoose.startSession();
     session.startTransaction();
+
     await Category.updateMany(
       { _id: newProduct.categories },
       { $push: { products: newProduct._id } }
-    );
+    ).session(session);
+
+    // TO-DO: Cant put session inside the save method and dont know why
     await newProduct.save();
+
     await session.commitTransaction();
+    session.endSession();
 
     res.status(201).send(newProduct);
   } catch (err) {
-    throw new DatabaseConnectionError("Nepodařilo se vytvořit produkt");
+    console.log(err);
+    // await session.abortTransaction();
+    session.endSession();
+
+    throw new DatabaseConnectionError();
   }
 };

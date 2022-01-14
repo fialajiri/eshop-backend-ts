@@ -29,6 +29,7 @@ export interface CartDoc extends mongoose.Document {
     removedQuantity: number
   ): Promise<CartDoc>;
   removeFromCart(productId: string): Promise<CartDoc>;
+  clearCart():Promise<CartDoc>
 }
 
 const cartSchema = new mongoose.Schema(
@@ -126,6 +127,13 @@ cartSchema.methods.removeFromCart = async function (productId: string) {
   }
   await this.save();
 };
+
+cartSchema.methods.clearCart = async function () {
+  this.items = [];
+  this.total = 0;
+  await this.save();
+};
+
 
 const Cart = mongoose.model<CartDoc, CartModel>("Cart", cartSchema);
 

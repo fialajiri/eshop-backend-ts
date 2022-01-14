@@ -43,16 +43,10 @@ export const subtractFromCart = async (
   }
 
   try {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-    product.set({ availability: product.availability + quantity });
-    await product.save();
     await cart.subtractFromCart(product, quantity);
     await cart.populate("items.product");
-    await session.commitTransaction();
     res.status(200).send(cart);
   } catch (err) {
-    console.log(err);
     throw new DatabaseConnectionError();
   }
 };

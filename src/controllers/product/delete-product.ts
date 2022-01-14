@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 import { DatabaseConnectionError } from "../../errors/database-connection-error";
 import { NotFoundError } from "../../errors/not-found-error";
 import { Category } from "../../models/category";
@@ -23,17 +23,21 @@ export const deleteProduct = async (
     throw new NotFoundError();
   }
 
+  const session = await mongoose.startSession();
+
   try {
-    const session = await mongoose.startSession()
-    session.startTransaction()
+    session.startTransaction();
     await Category.updateMany(
       { _id: product.categories },
-      { $pull: { products: product._id } }
+      { $pull: { products: product._id } },
+      { session: session }
     );
-    await product.remove();
+    await product.remove({ session: session });
     await session.commitTransaction();
     res.status(200).send();
   } catch (err) {
     throw new DatabaseConnectionError("Nepodařilo se smazat produkt");
+  } finally {
+    session.endSession();
   }
 };

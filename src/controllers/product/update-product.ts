@@ -11,7 +11,8 @@ export const updateProduct = async (
   next: NextFunction
 ) => {
   const { productId } = req.params;
-  const { name, categories, description, price, countInStock, image } = req.body;
+  const { name, categories, description, price, countInStock, image } =
+    req.body;
 
   let product: (ProductDoc & { _id: any }) | null;
 
@@ -29,21 +30,26 @@ export const updateProduct = async (
 
   product.set({ name, categories, image, description, price, countInStock });
 
+  const session = await mongoose.startSession();
+
   try {
-    const session = await mongoose.startSession();
     session.startTransaction();
     await Category.updateMany(
       { _id: product.categories },
-      { $push: { products: product._id } }
+      { $push: { products: product._id } },
+      { session: session }
     );
     await Category.updateMany(
       { _id: product.categories },
-      { $pull: { products: product._id } }
+      { $pull: { products: product._id } },
+      { session: session }
     );
-    await product.save();
+    await product.save({ session: session });
     await session.commitTransaction();
     res.status(200).send(product);
   } catch (err) {
     throw new DatabaseConnectionError("Nepodařilo se upravit produkt");
+  } finally {
+    session.endSession();
   }
 };

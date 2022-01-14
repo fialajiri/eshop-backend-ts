@@ -4,7 +4,7 @@ import { DatabaseConnectionError } from "../../errors/database-connection-error"
 import { NotFoundError } from "../../errors/not-found-error";
 import { Cart, CartDoc } from "../../models/cart";
 import { Product, ProductDoc } from "../../models/product";
-import mongoose from "mongoose";
+
 
 export const addToCart = async (
   req: Request,
@@ -29,18 +29,13 @@ export const addToCart = async (
     throw new NotFoundError();
   }
 
-  if (product.availability < quantity) {
+  if (product.countInStock < quantity) {
     throw new BadRequestError("Nelze přidat větší než dostupné množství");
   }
 
   try {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-    product.set({ availability: product.availability - quantity });
-    await product.save();
     await cart.addToCart(product, quantity);
     await cart.populate("items.product");
-    await session.commitTransaction();
     res.status(200).send(cart);
   } catch (err) {
     throw new DatabaseConnectionError();

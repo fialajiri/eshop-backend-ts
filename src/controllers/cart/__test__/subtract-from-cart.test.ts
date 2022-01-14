@@ -100,20 +100,7 @@ it("returns a 400 if the subtracted quantity is greater than the quantity in the
     .expect(400);
 });
 
-it("subtract a product quantity from the cart and restores the availability", async () => {
-  const { product1, cart } = await setup();
 
-  const { body: updatedCart } = await request(app)
-    .put(`/api/cart/subtractfromcart/${cart.id}`)
-    .send({
-      productId: product1.id,
-      quantity: 1,
-    })
-    .expect(200);
-
-  expect(updatedCart.items[0].quantity).toEqual(4);
-  expect(updatedCart.items[0].product.availability).toEqual(6);
-});
 
 it("removes the item from the cart if the subtracted quantity is equal to quantity in cart", async () => {
   const { product1, cart } = await setup();

@@ -71,10 +71,8 @@ it("it removes all items from the cart", async () => {
 
   expect(updatedCart.items.length).toEqual(0);
 
-  const updatedProduct1 = await Product.findById(product1.id)
-  const updatedProduct2 = await Product.findById(product2.id)
+  
 
-  expect(updatedProduct1?.availability).toEqual(10)
-  expect(updatedProduct2?.availability).toEqual(10)
+  
 
 });

@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from "../../../app";
-import { orderTestSetup } from "./get-all-orders.test";
+import { orderTestSetup } from "./order-test-setup";
 import mongoose from "mongoose";
 
 it("return a 404 if the provided id does not exists", async () => {
@@ -23,13 +23,14 @@ it("return a 401 if the the user is not authenticated", async () => {
 
 it("return an order for provided order id", async () => {
     const {user, orderOne} = await orderTestSetup()
+   
 
     const {body:order} = await request(app)
-        .get(`/api/orders/${orderOne.id}`)
+        .get(`/api/orders/${orderOne.order.id}`)
         .set('Cookie', global.signin(false))
         .send()
         .expect(200)
 
-    expect(order.id).toEqual(orderOne.id)
-    expect(order.taxPrice).toEqual(orderOne.taxPrice)
+    expect(order.id).toEqual(orderOne.order.id)
+    expect(order.taxPrice).toEqual(orderOne.order.taxPrice)
 });

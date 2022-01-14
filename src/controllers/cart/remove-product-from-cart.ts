@@ -4,7 +4,7 @@ import { Product, ProductDoc } from "../../models/product";
 import { Cart, CartDoc } from "../../models/cart";
 import { NotFoundError } from "../../errors/not-found-error";
 import { BadRequestError } from "../../errors/bad-request-error";
-import mongoose from "mongoose";
+
 
 export const removeProductFromCart = async (
   req: Request,
@@ -37,19 +37,10 @@ export const removeProductFromCart = async (
   }
 
   try {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-    product.set({
-      availability:
-        product.availability + cart.items[cartProductIndex].quantity,
-    });
-    await product.save();
     await cart.removeFromCart(productId);
     await cart.populate("items.product");
-    await session.commitTransaction();
     res.status(200).send(cart);
   } catch (err) {
-    console.log(err);
     throw new DatabaseConnectionError();
   }
 };

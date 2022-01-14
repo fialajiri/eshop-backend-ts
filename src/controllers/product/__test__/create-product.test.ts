@@ -18,7 +18,7 @@ it("creates a new product", async () => {
     })
     .expect(201);
 
-    console.log(product)
+   
 });
 
 it("return 401 if the user is not admin", async () => {

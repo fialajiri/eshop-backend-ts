@@ -49,33 +49,33 @@ const setup = async () => {
     })
     .expect(200);
 
-    await request(app)
+  await request(app)
     .put(`/api/cart/addtocart/${cart.id}`)
     .send({
       productId: product2.id,
-      quantity: 5,
+      quantity: 2,
     })
     .expect(200);
 
-    const address = Address.build({
-        firstName: "Jiri",
-        lastName: 'Fiala',
-        phone: "602107243",
-        street: "Karoliny Svetle",
-        streetNumber: '1794/1',
-        city:"Teplice",
-        postal: "41501"
-    })
+  const address = Address.build({
+    firstName: "Jiri",
+    lastName: "Fiala",
+    phone: "602107243",
+    street: "Karoliny Svetle",
+    streetNumber: "1794/1",
+    city: "Teplice",
+    postal: "41501",
+  });
 
-    const user = User.build({
-        email: 'test@test.com',
-        password: '123456',
-        isAdmin:true
-    })
+  const user = User.build({
+    email: "test@test.com",
+    password: "123456",
+    isAdmin: true,
+  });
 
-    await user.save()
+  await user.save();
 
-  return { cart, address, user };
+  return { cart, address, user, product1, product2 };
 };
 
 it("return a 401 if the user is not authenticated", async () => {
@@ -94,19 +94,85 @@ it("return a 404 if the cartId is invalid", async () => {
     .expect(404);
 });
 
-it("creates an order from valid cart", async () => {
-  const { cart, address, user } = await setup();
+it("thorw an error if the users tries to order bigger than available quantity", async () => {
+  const { cart, address, user, product1 } = await setup();
 
-  const { body: createdOrder } = await request(app)
+  const category = Category.build({
+    name: "Swiss watches",
+    products: [],
+  });
+
+  await category.save();
+
+  const product = Product.build({
+    name: "Omega Constalation",
+    price: 10000,
+    image: ["omega.image.jpg"],
+    description: "A great swiss watch",
+    countInStock: 10,
+    categories: [category],
+  });
+  product.set({ availability: 6 });
+  await product.save();
+
+  const { body: updatedCart } = await request(app)
+    .put(`/api/cart/addtocart/${cart.id}`)
+    .send({
+      productId: product.id,
+      quantity: 8,
+    })
+    .expect(200);
+
+  await request(app)
     .post("/api/orders")
     .set("Cookie", global.signin(false, user.id))
     .send({
       cartId: cart.id,
       address,
-      paymentMethod: PaymentMethods.Paypal,      
-      shippingPrice: 200
+      paymentMethod: PaymentMethods.Paypal,
+      shippingPrice: 200,
+    })
+    .expect(400);
+
+  const product1Updated = await Product.findById(product1.id);
+
+  expect(product1Updated?.availability).toEqual(10);
+});
+
+it("creates an order from valid cart", async () => {
+  const { cart, address, user } = await setup();
+
+  const {
+    body: { order },
+  } = await request(app)
+    .post("/api/orders")
+    .set("Cookie", global.signin(false, user.id))
+    .send({
+      cartId: cart.id,
+      address,
+      paymentMethod: PaymentMethods.Paypal,
+      shippingPrice: 200,
+    })
+    .expect(201);
+});
+
+it("creates an order from valid cart and set reduces products availability by the ordered quantity", async () => {
+  const { cart, address, user, product1, product2 } = await setup();
+
+  await request(app)
+    .post("/api/orders")
+    .set("Cookie", global.signin(false, user.id))
+    .send({
+      cartId: cart.id,
+      address,
+      paymentMethod: PaymentMethods.Paypal,
+      shippingPrice: 200,
     })
     .expect(201);
 
-  
+  const product1Updated = await Product.findById(product1.id);
+  const product2Updated = await Product.findById(product2.id);
+
+  expect(product1Updated?.availability).toEqual(5);
+  expect(product2Updated?.availability).toEqual(8);
 });
