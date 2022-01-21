@@ -43,8 +43,7 @@ export const subtractFromCart = async (
   }
 
   try {
-    await cart.subtractFromCart(product, quantity);
-    await cart.populate("items.product");
+    await cart.subtractFromCart(product, quantity);    
     res.status(200).send(cart);
   } catch (err) {
     throw new DatabaseConnectionError();

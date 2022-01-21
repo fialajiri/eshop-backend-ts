@@ -37,8 +37,7 @@ export const removeProductFromCart = async (
   }
 
   try {
-    await cart.removeFromCart(productId);
-    await cart.populate("items.product");
+    await cart.removeFromCart(productId);    
     res.status(200).send(cart);
   } catch (err) {
     throw new DatabaseConnectionError();

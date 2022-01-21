@@ -15,7 +15,9 @@ export interface CartDoc extends mongoose.Document {
   items: [
     {
       product: ProductDoc;
+      name: string;
       quantity: number;
+      image: string;
       price: number;
       subTotal: number;
     }
@@ -29,7 +31,7 @@ export interface CartDoc extends mongoose.Document {
     removedQuantity: number
   ): Promise<CartDoc>;
   removeFromCart(productId: string): Promise<CartDoc>;
-  clearCart():Promise<CartDoc>
+  clearCart(): Promise<CartDoc>;
 }
 
 const cartSchema = new mongoose.Schema(
@@ -42,7 +44,9 @@ const cartSchema = new mongoose.Schema(
           ref: "Product",
         },
         quantity: { type: Number, required: true },
+        name: { type: String, required: true },
         price: { type: Number, required: true },
+        image: { type: String, required: true },
         subTotal: { type: Number, default: 0, required: true },
       },
     ],
@@ -85,12 +89,16 @@ cartSchema.methods.addToCart = async function name(
     newQuantity = this.items[cartProductIndex].quantity + quantity;
     updatedCartItems[cartProductIndex].quantity = newQuantity;
     updatedCartItems[cartProductIndex].subTotal =
-      updatedCartItems[cartProductIndex].quantity * product.price;
+    updatedCartItems[cartProductIndex].quantity * product.price;
     updatedCartItems[cartProductIndex].price = product.price;
+    updatedCartItems[cartProductIndex].image = product.image[0];
+    updatedCartItems[cartProductIndex].name = product.name;
   } else {
     updatedCartItems.push({
       product: product.id,
       quantity: quantity,
+      image: product.image[0],
+      name: product.name,
       price: product.price,
       subTotal: product.price * quantity,
     });
@@ -108,7 +116,6 @@ cartSchema.methods.subtractFromCart = async function (
   removedQuantity: number
 ) {
   await this.addToCart(product, -removedQuantity);
- 
 };
 
 cartSchema.methods.removeFromCart = async function (productId: string) {
@@ -134,25 +141,9 @@ cartSchema.methods.clearCart = async function () {
   await this.save();
 };
 
-
 const Cart = mongoose.model<CartDoc, CartModel>("Cart", cartSchema);
 
 export { Cart };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // cartSchema.methods.addToCart = async function name(
 //   product: ProductDoc,
@@ -187,35 +178,33 @@ export { Cart };
 //   await this.save();
 // };
 
-
 // cartSchema.methods.subtractFromCart = async function (
 //   product: ProductDoc,
 //   removedQuantity: number
 // ) {
 
-  // const cartProductIndex = this.items.findIndex((cp: any) => {
-  //   return cp.product._id.toString() === product.id.toString();
-  // });
-  // let newQuantity: number;
-  // const updatedCartItems = [...this.items];
+// const cartProductIndex = this.items.findIndex((cp: any) => {
+//   return cp.product._id.toString() === product.id.toString();
+// });
+// let newQuantity: number;
+// const updatedCartItems = [...this.items];
 
-  // if (
-  //   cartProductIndex >= 0 &&
-  //   this.items[cartProductIndex].quantity <= removedQuantity
-  // ) {
-  //   const updatedCart = await this.removeFromCart(product.id);
-  //   return updatedCart;
-  // } else if (cartProductIndex >= 0) {
-  //   newQuantity = this.items[cartProductIndex].quantity - removedQuantity;
-  //   updatedCartItems[cartProductIndex].quantity = newQuantity;
-  //   updatedCartItems[cartProductIndex].subTotal =
-  //     updatedCartItems[cartProductIndex].quantity * product.price;
-  //   updatedCartItems[cartProductIndex].price = product.price;
-  // }
-  // this.items = updatedCartItems;
-  // this.total = this.items
-  //   .map((item: any) => item.subTotal)
-  //   .reduce((acc: number, next: number) => acc + next);
+// if (
+//   cartProductIndex >= 0 &&
+//   this.items[cartProductIndex].quantity <= removedQuantity
+// ) {
+//   const updatedCart = await this.removeFromCart(product.id);
+//   return updatedCart;
+// } else if (cartProductIndex >= 0) {
+//   newQuantity = this.items[cartProductIndex].quantity - removedQuantity;
+//   updatedCartItems[cartProductIndex].quantity = newQuantity;
+//   updatedCartItems[cartProductIndex].subTotal =
+//     updatedCartItems[cartProductIndex].quantity * product.price;
+//   updatedCartItems[cartProductIndex].price = product.price;
+// }
+// this.items = updatedCartItems;
+// this.total = this.items
+//   .map((item: any) => item.subTotal)
+//   .reduce((acc: number, next: number) => acc + next);
 
-  // await this.save();
-
+// await this.save();

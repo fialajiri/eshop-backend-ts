@@ -34,10 +34,10 @@ export const addToCart = async (
   }
 
   try {
-    await cart.addToCart(product, quantity);
-    await cart.populate("items.product");
+    await cart.addToCart(product, quantity);    
     res.status(200).send(cart);
   } catch (err) {
+    console.log(err);
     throw new DatabaseConnectionError();
   }
 };

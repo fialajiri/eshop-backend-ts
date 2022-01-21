@@ -1,6 +1,7 @@
 import express from "express";
 import "express-async-errors";
 import cookieSession from "cookie-session";
+import cors from 'cors'
 
 import { errorHandler } from "./middlewares/error-handler";
 import { currentUser } from "./middlewares/current-user";
@@ -12,9 +13,15 @@ import { categoryRoutes } from "./routes/category-routes";
 import { cartRoutes } from "./routes/cart-routes";
 import { OrderRoutes } from "./routes/order-routes";
 
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+
 const app = express();
 
 app.use(express.json());
+app.use(cors(corsOptions));
 
 app.use(
   cookieSession({
