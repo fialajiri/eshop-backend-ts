@@ -4,13 +4,32 @@ import { body } from "express-validator";
 import { validateRequest } from "../middlewares/validate-request";
 
 import getCurrentUser from "../controllers/user/current-user";
+import deleteUser from "../controllers/user/delete-user";
+import getAllUsers from "../controllers/user/get-all-users";
+import updateUserProfile from "../controllers/user/update-user-profile";
+import updateUser from "../controllers/user/update-user";
+import getUserDetails from "../controllers/user/get-user-details";
 import signIn from "../controllers/user/signin";
 import signUp from "../controllers/user/signup";
 import signOut from "../controllers/user/signout";
 
+import {requireAuth} from '../middlewares/require-auth'
+import { requireAdmin } from "../middlewares/require-admin";
+
+
 const router = express.Router();
 
 router.get("/api/users/currentuser", getCurrentUser);
+
+router.get('/api/users/getallusers',requireAdmin, getAllUsers);
+
+router.get('/api/users/:userId',requireAdmin, getUserDetails);
+
+router.delete('/api/users/:userid', requireAdmin,  deleteUser);
+
+router.put('/api/users/updateprofile/:userId', requireAuth, updateUserProfile)
+
+router.put('/api/user/:userId', requireAdmin, updateUser)
 
 router.post(
   "/api/users/signup",

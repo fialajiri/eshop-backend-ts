@@ -99,7 +99,7 @@ it("add a new item to the cart", async () => {
     .expect(200);
 
   expect(updatedCart.items.length).toEqual(2);
-  expect(updatedCart.items[1].product.id).toEqual(product.id);
+  expect(updatedCart.items[1].product).toEqual(product.id);
 });
 
 it("increse the quantity of existing item", async () => {

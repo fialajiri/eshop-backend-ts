@@ -39,7 +39,7 @@ router.get("/api/products/:productId", getProductById);
 
 router.post(
   "/api/products",
-  requireAdmin,
+  // requireAdmin,
   productValidation,
   validateRequest,
   createProduct
