@@ -14,7 +14,7 @@ router.get("/api/categories", getCategories);
 
 router.post(
   "/api/categories",
-  requireAdmin,
+  // requireAdmin,
   [
     body("name")
       .isLength({ min: 2, max: 20 })

@@ -9,12 +9,12 @@ export const createProduct = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name, categories, description, price, countInStock, image } =
+  const { name, categories, description, price, countInStock, images } =
     req.body;
 
   const newProduct = Product.build({
     name,
-    image,
+    image: images,
     categories,
     description,
     price,

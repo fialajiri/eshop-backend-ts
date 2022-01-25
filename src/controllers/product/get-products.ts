@@ -4,11 +4,7 @@ import { Category } from "../../models/category";
 import { Product } from "../../models/product";
 import { CategoryDoc } from "../../models/category";
 
-export const getProducts = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const pageSize = 8;
     const page = Number(req.query.pageNumber) || 1;
@@ -37,6 +33,7 @@ export const getProducts = async (
 
     const count = await Product.count({ ...keyword, ...categoryId });
     const products = await Product.find({ ...keyword, ...categoryId })
+      .populate({ path: "categories", select: "_id, name" })
       .limit(pageSize)
       .skip(pageSize * (page - 1));
 

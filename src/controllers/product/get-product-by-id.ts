@@ -12,7 +12,7 @@ export const getProductById = async (
   let product: (ProductDoc & { _id: any }) | null;
 
   try {
-    product = await Product.findById(productId);
+    product = await Product.findById(productId).populate({ path: "categories", select: "_id, name" });
   } catch (err) {
     throw new DatabaseConnectionError();
   }

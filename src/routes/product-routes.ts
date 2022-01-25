@@ -21,12 +21,12 @@ const productValidation = [
     .not()
     .isEmpty()
     .withMessage("Kategorie produktu musí být vyplněna"),
-  body("image").not().isEmpty().withMessage("Přiložte fotografie"),
+  body("images").not().isEmpty().withMessage("Přiložte fotografie"),
   body("description")
     .trim()
     .not().isEmpty()
-    .isLength({ max: 200 })
-    .withMessage("Popis musí mít maximálně 200 znaků"),
+    .isLength({ max: 400 })
+    .withMessage("Popis musí mít maximálně 400 znaků"),
   body("price").isFloat({ gt: 0 }).withMessage("Cena musí být větší než nula"),
   body("countInStock")
     .isInt({ min: 0 })

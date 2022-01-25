@@ -12,6 +12,7 @@ import { productRoutes } from "./routes/product-routes";
 import { categoryRoutes } from "./routes/category-routes";
 import { cartRoutes } from "./routes/cart-routes";
 import { OrderRoutes } from "./routes/order-routes";
+import { uploadRoutes } from "./routes/upload-routes";
 
 const corsOptions = {
   origin: true,
@@ -38,6 +39,7 @@ app.use(productRoutes);
 app.use(categoryRoutes);
 app.use(cartRoutes);
 app.use(OrderRoutes);
+app.use(uploadRoutes)
 
 app.all("*", () => {
   throw new NotFoundError();
