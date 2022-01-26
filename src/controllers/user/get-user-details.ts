@@ -5,7 +5,9 @@ const getUserDetails = async (
   res: Response,
   next: NextFunction
 ) => {
-  res.send();
+  res.send("OK"
+
+  );
 };
 
 export default getUserDetails;

@@ -16,7 +16,7 @@ import { uploadRoutes } from "./routes/upload-routes";
 
 const corsOptions = {
   origin: true,
-  credentials: true,
+  credentials: true,  
 };
 
 const app = express();
@@ -24,11 +24,15 @@ const app = express();
 app.use(express.json());
 app.use(cors(corsOptions));
 
+
+
 app.use(
   cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== "test",
+    secure: false,
     httpOnly: true,
+    sameSite:'none',
+   
   })
 );
 

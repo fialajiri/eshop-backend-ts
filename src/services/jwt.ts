@@ -10,6 +10,7 @@ export class jwtService {
   static getToken(payload: userPayload) {
     const expiresIn = eval(process.env.JWT_EXPIRY!);
     const secret = process.env.JWT_SECRET!;
+    
 
     return jwt.sign(payload, secret, { expiresIn: expiresIn });
   }
@@ -24,5 +25,6 @@ export class jwtService {
   static verifyUser(jwtToken: string) {
     const secret = process.env.JWT_SECRET!;
     return jwt.verify(jwtToken, secret) as userPayload;
+
   }
 }

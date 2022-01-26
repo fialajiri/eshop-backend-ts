@@ -23,7 +23,7 @@ router.get("/api/users/currentuser", getCurrentUser);
 
 router.get('/api/users/getallusers',requireAdmin, getAllUsers);
 
-router.get('/api/users/:userId',requireAdmin, getUserDetails);
+router.get('/api/users/:userId',requireAuth, getUserDetails);
 
 router.delete('/api/users/:userid', requireAdmin,  deleteUser);
 
