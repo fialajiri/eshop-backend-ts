@@ -11,6 +11,17 @@ import { categoryRoutes } from "./routes/category-routes";
 import { cartRoutes } from "./routes/cart-routes";
 import { OrderRoutes } from "./routes/order-routes";
 import { uploadRoutes } from "./routes/upload-routes";
+import cookieParser from 'cookie-parser'
+
+export const COOKIE_OPTIONS = {
+  httpOnly: true,
+  // Since localhost is not having https protocol,
+  // secure cookies do not work correctly (in postman)
+  secure: true,
+  signed: true,
+  maxAge: eval(process.env.REFRESH_TOKEN_EXPIRY!) * 1000,
+  
+};
 
 const corsOptions = {
   origin: true,
@@ -22,13 +33,15 @@ const app = express();
 app.use(express.json());
 app.use(cors(corsOptions));
 
-app.use(
-  cookieSession({
-    signed: false,
-    secure: true,
-    httpOnly: true,
-  })
-);
+app.use(cookieParser(process.env.COOKIE_SECRET));
+
+// app.use(
+//   cookieSession({
+//     signed: false,
+//     secure: true,
+//     httpOnly: true,
+//   })
+// );
 
 app.use(currentUser);
 
