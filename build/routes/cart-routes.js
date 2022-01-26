@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.cartRoutes = void 0;
+var express_1 = __importDefault(require("express"));
+var get_cart_1 = require("../controllers/cart/get-cart");
+var get_cart_by_id_1 = require("../controllers/cart/get-cart-by-id");
+var add_to_cart_1 = require("../controllers/cart/add-to-cart");
+var subtract_from_cart_1 = require("../controllers/cart/subtract-from-cart");
+var remove_product_from_cart_1 = require("../controllers/cart/remove-product-from-cart");
+var clear_cart_1 = require("../controllers/cart/clear-cart");
+var router = express_1.default.Router();
+exports.cartRoutes = router;
+router.get("/api/cart", get_cart_1.getCart);
+router.get("/api/cart/:cartId", get_cart_by_id_1.getCartById);
+router.put("/api/cart/addtocart/:cartId", add_to_cart_1.addToCart);
+router.put("/api/cart/subtractfromcart/:cartId", subtract_from_cart_1.subtractFromCart);
+router.put("/api/cart/removefromcart/:cartId", remove_product_from_cart_1.removeProductFromCart);
+router.put("/api/cart/clearcart/:cartId", clear_cart_1.clearCart);
