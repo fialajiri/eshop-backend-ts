@@ -48,29 +48,16 @@ var start = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!process.env.DB_USER ||
-                    !process.env.DB_PASSWORD ||
-                    !process.env.DB_NAME) {
-                    throw new Error("DB_USER, DB_PASSWORD and DB_NAME must be defined");
-                }
-                if (!process.env.JWT_SECRET ||
-                    !process.env.JWT_EXPIRY ||
-                    !process.env.REFRESH_TOKEN_SECRET ||
-                    !process.env.REFRESH_TOKEN_EXPIRY) {
-                    throw new Error("JWT_SECRET, JWT_EXPIRY, REFRESH_TOKEN_SECRET and REFRESH_TOKEN_EXPIRY must be defined");
-                }
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
+                _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, mongoose_1.default.connect(mongoDbUrl)];
-            case 2:
+            case 1:
                 _a.sent();
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 3];
+            case 2:
                 err_1 = _a.sent();
                 console.log(err_1);
-                return [3 /*break*/, 4];
-            case 4:
+                return [3 /*break*/, 3];
+            case 3:
                 app_1.app.listen(PORT, function () {
                     console.log("Listening on port 5000.");
                 });

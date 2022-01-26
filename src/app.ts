@@ -1,11 +1,9 @@
 import express from "express";
 import "express-async-errors";
 import cookieSession from "cookie-session";
-import cors from 'cors'
-
+import cors from "cors";
 import { errorHandler } from "./middlewares/error-handler";
 import { currentUser } from "./middlewares/current-user";
-
 import { NotFoundError } from "./errors/not-found-error";
 import { userRoutes } from "./routes/user-routes";
 import { productRoutes } from "./routes/product-routes";
@@ -16,7 +14,7 @@ import { uploadRoutes } from "./routes/upload-routes";
 
 const corsOptions = {
   origin: true,
-  credentials: true,  
+  credentials: true,
 };
 
 const app = express();
@@ -24,15 +22,11 @@ const app = express();
 app.use(express.json());
 app.use(cors(corsOptions));
 
-
-
 app.use(
   cookieSession({
     signed: false,
     secure: true,
     httpOnly: true,
-    sameSite:'none',
-   
   })
 );
 
@@ -43,7 +37,7 @@ app.use(productRoutes);
 app.use(categoryRoutes);
 app.use(cartRoutes);
 app.use(OrderRoutes);
-app.use(uploadRoutes)
+app.use(uploadRoutes);
 
 app.all("*", () => {
   throw new NotFoundError();

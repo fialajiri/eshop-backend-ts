@@ -27,9 +27,8 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)(corsOptions));
 app.use((0, cookie_session_1.default)({
     signed: false,
-    secure: false,
+    secure: true,
     httpOnly: true,
-    sameSite: 'none',
 }));
 app.use(current_user_1.currentUser);
 app.use(user_routes_1.userRoutes);
