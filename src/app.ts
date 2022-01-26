@@ -29,7 +29,7 @@ app.use(cors(corsOptions));
 app.use(
   cookieSession({
     signed: false,
-    secure: false,
+    secure: true,
     httpOnly: true,
     sameSite:'none',
    
