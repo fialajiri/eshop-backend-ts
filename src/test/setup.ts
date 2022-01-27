@@ -16,6 +16,7 @@ let replset:any
 beforeAll(async () => {
   process.env.JWT_SECRET = "my_secret_key";
   process.env.JWT_EXPIRY = '1000'
+  process.env.REFRESH_TOKEN_EXPIRY = '1000'
 
   // mongo = await MongoMemoryServer.create();
   // const mongoUri = await mongo.getUri();
@@ -66,5 +67,6 @@ global.signin = (isAdmin:boolean, userId?:string) => {
   const base64 = Buffer.from(sessionJSON).toString('base64');
 
   // return a string thats the cookie with the encoded data
-  return [`session=${base64}`];
+  // return [`session=${base64}`];
+  return [`cookie=${sessionJSON}`];
 };

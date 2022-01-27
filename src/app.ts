@@ -13,13 +13,15 @@ import { OrderRoutes } from "./routes/order-routes";
 import { uploadRoutes } from "./routes/upload-routes";
 import cookieParser from 'cookie-parser'
 
+
 export const COOKIE_OPTIONS = {
   httpOnly: true,
   // Since localhost is not having https protocol,
   // secure cookies do not work correctly (in postman)
   secure: true,
-  signed: true,
-  maxAge: eval(process.env.REFRESH_TOKEN_EXPIRY!) * 1000,
+  signed: false,
+  // maxAge: eval(process.env.REFRESH_TOKEN_EXPIRY!) * 1000,
+  sameSite: "none",
   
 };
 
@@ -31,15 +33,19 @@ const corsOptions = {
 const app = express();
 
 app.use(express.json());
+
+app.use(cookieParser());
+// app.use(cookieParser(process.env.COOKIE_SECRET));
+
 app.use(cors(corsOptions));
 
-app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // app.use(
 //   cookieSession({
 //     signed: false,
 //     secure: true,
 //     httpOnly: true,
+//     sameSite: "none"
 //   })
 // );
 
@@ -59,3 +65,6 @@ app.all("*", () => {
 app.use(errorHandler);
 
 export { app };
+
+
+

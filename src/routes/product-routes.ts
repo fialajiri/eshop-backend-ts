@@ -21,7 +21,7 @@ const productValidation = [
     .not()
     .isEmpty()
     .withMessage("Kategorie produktu musí být vyplněna"),
-  body("images").not().isEmpty().withMessage("Přiložte fotografie"),
+  body("image").not().isEmpty().withMessage("Přiložte fotografie"),
   body("description")
     .trim()
     .not().isEmpty()
@@ -39,7 +39,7 @@ router.get("/api/products/:productId", getProductById);
 
 router.post(
   "/api/products",
-  // requireAdmin,
+  requireAdmin,
   productValidation,
   validateRequest,
   createProduct

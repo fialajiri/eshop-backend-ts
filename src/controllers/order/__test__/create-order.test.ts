@@ -129,7 +129,7 @@ it("thorw an error if the users tries to order bigger than available quantity", 
     .send({
       cartId: cart.id,
       address,
-      paymentMethod: PaymentMethods.Paypal,
+      paymentMethod: PaymentMethods.PAYPAL,
       shippingPrice: 200,
     })
     .expect(400);
@@ -150,7 +150,7 @@ it("creates an order from valid cart", async () => {
     .send({
       cartId: cart.id,
       address,
-      paymentMethod: PaymentMethods.Paypal,
+      paymentMethod: PaymentMethods.PAYPAL,
       shippingPrice: 200,
     })
     .expect(201);
@@ -165,7 +165,7 @@ it("creates an order from valid cart and set reduces products availability by th
     .send({
       cartId: cart.id,
       address,
-      paymentMethod: PaymentMethods.Paypal,
+      paymentMethod: PaymentMethods.PAYPAL,
       shippingPrice: 200,
     })
     .expect(201);

@@ -26,7 +26,7 @@ export const updateOrderToPaid = async (
   }
 
   order.set({
-    orderStatus: OrderStatus.Paid,
+    orderStatus: OrderStatus.PAID,
     paidAt: new Date(),
   });
 

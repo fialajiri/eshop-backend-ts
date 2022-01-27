@@ -1,5 +1,5 @@
 export enum PaymentMethods {
-  Paypal = "paypal",
-  BankTransfer = "bank-transfer",
-  CreditCard = "credit-card",
+  PAYPAL = "PAYPAL",
+  BANK_TRANSFER = "BANK_TRANSFER",
+  CREDIT_CARD = "CREDIT_CARD-card",
 }

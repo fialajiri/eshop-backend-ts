@@ -9,12 +9,13 @@ export const createProduct = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name, categories, description, price, countInStock, images } =
+  const { name, categories, description, price, countInStock, image } =
     req.body;
 
+   
   const newProduct = Product.build({
     name,
-    image: images,
+    image: image,
     categories,
     description,
     price,
@@ -43,6 +44,7 @@ export const createProduct = async (
     // await session.abortTransaction();
     session.endSession();
 
+    
     throw new DatabaseConnectionError();
   }
 };

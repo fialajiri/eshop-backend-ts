@@ -24,7 +24,7 @@ export const updateOrderToDelivered = async (
   }
 
   order.set({
-    orderStatus: OrderStatus.Delivered,
+    orderStatus: OrderStatus.DELIVERED,
     deliveredAt: new Date(),
   });
 

@@ -25,7 +25,7 @@ router.get('/api/users/getallusers',requireAdmin, getAllUsers);
 
 router.get('/api/users/:userId',requireAuth, getUserDetails);
 
-router.delete('/api/users/:userid', requireAdmin,  deleteUser);
+router.delete('/api/users/:userId', requireAdmin,  deleteUser);
 
 router.put('/api/users/updateprofile/:userId', requireAuth, updateUserProfile)
 

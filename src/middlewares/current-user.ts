@@ -10,27 +10,24 @@ declare global {
   }
 }
 
-export const currentUser = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { signedCookies = {} } = req;
-  const { jwt } = signedCookies;
+export const currentUser = (req: Request, res: Response, next: NextFunction) => {
+  const { cookies = {} } = req;
+  let { jwt } = cookies;
+  // the next line only for testing with jest
+  if (!jwt && cookies.cookie) jwt = JSON.parse(cookies.cookie).jwt;
+  
+  
 
-  if (!jwt) {
-    console.log(signedCookies)
+  if (!jwt) {   
     return next();
   }
 
   try {
     const payload = jwtService.verifyUser(jwt);
     req.currentUser = payload;
-    console.log(payload)
   } catch (err) {}
 
-  // if (!req.session?.jwt) {
-  //   console.log(signedCookies)
+  // if (!req.session?.jwt) {   
   //   return next();
   // }
 

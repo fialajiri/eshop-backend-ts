@@ -17,6 +17,8 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
         }
       : {};
 
+      
+
     const categoryId = req.query.categoryId
       ? {
           categories: {

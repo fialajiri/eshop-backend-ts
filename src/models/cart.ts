@@ -86,6 +86,7 @@ cartSchema.methods.addToCart = async function name(
   ) {
     return await this.removeFromCart(product.id);
   } else if (cartProductIndex >= 0) {
+    
     newQuantity = this.items[cartProductIndex].quantity + quantity;
     updatedCartItems[cartProductIndex].quantity = newQuantity;
     updatedCartItems[cartProductIndex].subTotal =

@@ -1,14 +1,15 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, response } from "express";
 import { BadRequestError } from "../../errors/bad-request-error";
 import { DatabaseConnectionError } from "../../errors/database-connection-error";
 import { User, UserDoc } from "../../models/user";
 import { jwtService, userPayload } from "../../services/jwt";
-import { COOKIE_OPTIONS } from "../../app";
 import { Password } from "../../services/password";
-
+import { COOKIE_OPTIONS } from "../../app";
 
 const signIn = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
+
+  console.log('signin')
 
   let existingUser: (UserDoc & { _id: any }) | null;
 
@@ -36,12 +37,8 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
 
   const userJwt = jwtService.getToken(payload);
 
-  // req.session = {
-  //   jwt: userJwt,
-  // };
-  
-  res.cookie("jwt", userJwt, COOKIE_OPTIONS)
-  res.status(200).send(existingUser);
+  // @ts-ignore
+  res.status(200).cookie("jwt", userJwt, COOKIE_OPTIONS).send(existingUser);
 };
 
 export default signIn;

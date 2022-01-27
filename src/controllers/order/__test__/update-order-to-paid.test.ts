@@ -33,7 +33,7 @@ it("updates an order to paid", async () => {
     .send()
     .expect(200);
 
-  expect(paidOrder.orderStatus).toEqual(OrderStatus.Paid);
+  expect(paidOrder.orderStatus).toEqual(OrderStatus.PAID);
   expect(paidOrder.paidAt).toBeDefined();
 });
 
@@ -49,7 +49,7 @@ it('updates order to paid and decreses product count in stock by ordered quantit
     .send()
     .expect(200);
 
-  expect(paidOrder.orderStatus).toEqual(OrderStatus.Paid);
+  expect(paidOrder.orderStatus).toEqual(OrderStatus.PAID);
   expect(paidOrder.paidAt).toBeDefined();
 
   const updatedProduct = await Product.findById(product.id)  

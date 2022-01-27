@@ -12,7 +12,7 @@ const createProductOne = async () => {
 
   await category.save();
 
-  return request(app)
+  const { body: product } = await request(app)
     .post("/api/products")
     .set("Cookie", global.signin(true))
     .send({
@@ -23,6 +23,8 @@ const createProductOne = async () => {
       price: 199,
       countInStock: 10,
     });
+
+    return {product, categoryId}
 };
 
 const createProductTwo = async () => {
@@ -34,7 +36,7 @@ const createProductTwo = async () => {
 
   await category.save();
 
-  return request(app)
+  const { body: product } = await request(app)
     .post("/api/products")
     .set("Cookie", global.signin(true))
     .send({
@@ -45,6 +47,8 @@ const createProductTwo = async () => {
       price: 199,
       countInStock: 10,
     });
+
+    return {product, categoryId}
 };
 
 it("can fetch a list of products", async () => {
@@ -59,10 +63,10 @@ it("can fetch a list of products", async () => {
 
 it("can fetch product by category", async () => {
   await createProductOne();
-  await createProductTwo();
+  const {categoryId} = await createProductTwo();
 
   const response = await request(app)
-    .get("/api/products?category=omega")
+    .get(`/api/products?categoryId=${categoryId}`)
     .send({})
     .expect(200);
 

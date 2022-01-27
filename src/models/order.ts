@@ -66,7 +66,7 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: Object.values(OrderStatus),
-      default: OrderStatus.Created,
+      default: OrderStatus.CREATED,
     },
     paidAt: { type: Date },
     deliveredAt: { type: Date },

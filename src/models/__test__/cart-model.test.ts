@@ -38,7 +38,7 @@ it("adds products to the cart", async () => {
   await cart.addToCart(product1, 1);
   await cart.addToCart(product2, 2);
 
-  expect(cart.items.length).toEqual(2);
+  expect(cart.items.length).toEqual(2);  
 });
 it("removes product from cart", async () => {
   const product = await createProduct();

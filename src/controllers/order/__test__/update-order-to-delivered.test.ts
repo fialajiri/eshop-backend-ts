@@ -24,7 +24,7 @@ const setup = async () => {
 
   order.set({
     shippingAddress: address,
-    paymentMethod: PaymentMethods.BankTransfer,
+    paymentMethod: PaymentMethods.BANK_TRANSFER,
     taxPrice: 1000,
     totalPrice: 1000,
   });
@@ -56,6 +56,6 @@ it("updates an order to paid", async () => {
     .send()
     .expect(200);
 
-  expect(deliveredOrder.orderStatus).toEqual(OrderStatus.Delivered);
+  expect(deliveredOrder.orderStatus).toEqual(OrderStatus.DELIVERED);
   expect(deliveredOrder.deliveredAt).toBeDefined();
 });

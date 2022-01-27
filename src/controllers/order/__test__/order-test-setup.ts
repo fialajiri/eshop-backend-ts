@@ -70,7 +70,7 @@ export const orderTestSetup = async () => {
       .send({
         cartId: cart1.id,
         address,
-        paymentMethod: PaymentMethods.Paypal,
+        paymentMethod: PaymentMethods.PAYPAL,
         shippingPrice: 400,
       })
       .expect(201);
@@ -81,7 +81,7 @@ export const orderTestSetup = async () => {
       .send({
         cartId: cart2.id,
         address,
-        paymentMethod: PaymentMethods.Paypal,
+        paymentMethod: PaymentMethods.PAYPAL,
         shippingPrice: 200,
       })
       .expect(201);
