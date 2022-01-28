@@ -29,7 +29,7 @@ router.delete('/api/users/:userId', requireAdmin,  deleteUser);
 
 router.put('/api/users/updateprofile/:userId', requireAuth, updateUserProfile)
 
-router.put('/api/user/:userId', requireAdmin, updateUser)
+router.put('/api/users/:userId', requireAdmin, updateUser)
 
 router.post(
   "/api/users/signup",

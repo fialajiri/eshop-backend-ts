@@ -9,8 +9,6 @@ import { COOKIE_OPTIONS } from "../../app";
 const signIn = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
-  console.log('signin')
-
   let existingUser: (UserDoc & { _id: any }) | null;
 
   try {
@@ -37,7 +35,6 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
 
   const userJwt = jwtService.getToken(payload);
 
-  // @ts-ignore
   res.status(200).cookie("jwt", userJwt, COOKIE_OPTIONS).send(existingUser);
 };
 

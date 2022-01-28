@@ -3,6 +3,7 @@ import { BadRequestError } from "../../errors/bad-request-error";
 import { DatabaseConnectionError } from "../../errors/database-connection-error";
 import { User, UserDoc } from "../../models/user";
 import { jwtService, userPayload } from "../../services/jwt";
+import { COOKIE_OPTIONS } from "../../app";
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
@@ -41,7 +42,8 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     jwt: userJwt,
   };
 
-  res.status(201).send(newUser);
+  
+  res.status(201).cookie("jwt", userJwt, COOKIE_OPTIONS).send(newUser);
 };
 
 export default signUp;

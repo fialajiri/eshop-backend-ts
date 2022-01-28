@@ -15,5 +15,6 @@ it("clears the cookie after signing out", async () => {
     .send({})
     .expect(200);
 
-  expect(response.get("Set-Cookie").shift()).toMatch(/1970/);
+    
+  expect(response.get("Set-Cookie")[0]).toEqual("jwt=; Path=/; HttpOnly; Secure; SameSite=None")
 });

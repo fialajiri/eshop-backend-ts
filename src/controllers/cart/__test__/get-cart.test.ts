@@ -12,14 +12,11 @@ it("return new cart for unsigned user without cart id from local storage", async
 });
 
 it("for cookie authenticated user finds his cart and returs it", async () => {
-  const user = global.signin(false);
-
-  const token = user[0].split("=")[1];
-  var payload = JSON.parse(Buffer.from(token, "base64").toString());
-  const decodedPayload = jwt.decode(payload.jwt) as userPayload;
+  const userID = new mongoose.Types.ObjectId().toHexString();
+  const user = global.signin(false, userID);
 
   const cart = Cart.build({});
-  cart.set({ user: decodedPayload.id });
+  cart.set({ user: userID });
   await cart.save();
 
   const { body: usersCart } = await request(app)

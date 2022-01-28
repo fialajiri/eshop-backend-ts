@@ -17,6 +17,7 @@ beforeAll(async () => {
   process.env.JWT_SECRET = "my_secret_key";
   process.env.JWT_EXPIRY = '1000'
   process.env.REFRESH_TOKEN_EXPIRY = '1000'
+  process.env.COOKIE_SECRET = 'cookie_secret'
 
   // mongo = await MongoMemoryServer.create();
   // const mongoUri = await mongo.getUri();

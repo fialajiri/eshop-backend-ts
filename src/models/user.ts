@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Password } from "../services/password";
+import { AddressDoc } from "./address";
 
 interface UserAttrs {
   email: string;
@@ -13,10 +14,13 @@ interface UserModel extends mongoose.Model<UserDoc> {
 
 export interface UserDoc extends mongoose.Document {
   email: string;
+  firstName: string;
+  lastName: string;
   password: string;
   isAdmin: boolean;
   updatedAt: string;
   createdAt: string;
+  addresses: AddressDoc[]
 }
 
 const userSchema = new mongoose.Schema(
@@ -24,6 +28,9 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+    firstName: {type: String},
+    lastName:{type: String},
+    addresses:  [{ type: mongoose.Types.ObjectId, ref: "Address" }],
   },
   {
     toJSON: {
