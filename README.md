@@ -20,7 +20,7 @@ Tento projekt tvoří backend k eshopu. Tato webová stránka bude sloužit pro 
   - Všechna data se ukládají do databáze MongoDB  
     - mongoose: 6.1.5
     
-  - Fotografie se ukládají do AWS S3 Bucketu nepřímo, tj. nejsou přes server. Na AWS se nahrávají přímo z frontendu
+  - Fotografie se ukládají do AWS S3 Bucketu přímo, tj. nejsou přes server. Na AWS se nahrávají přímo z frontendu
     - aws-sdk: 2.1035.0
     
   - Projekt je testovám pomocí frameworku Jest
